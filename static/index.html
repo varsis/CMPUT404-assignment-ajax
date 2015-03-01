@@ -284,7 +284,7 @@ function drawPolygon(context,entity){
 
 //XXX: TODO Make this prettier!
 function drawEntity(context,entity) {
-    if(entity['type'] === 'polygon'){
+    if(entity['type'] === 'mario'){
         drawMario(context,entity);
     } else if (entity['type'] === 'square'){
         drawSquare(context,entity);
@@ -474,11 +474,11 @@ function getRandomColor() {
 // Add the application specific mouse listeners!
 //XXX: TODO Make these prettier!
 mouse.mousedowners.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':getRandomColor(),'type':'polygon'});
+    addEntityWithoutName({'x':x,'y':y,'colour':getRandomColor(),'type':'square'});
 });
 
 mouse.mouseuppers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':getRandomColor(),'type':'square'});
+    addEntityWithoutName({'x':x,'y':y,'colour':getRandomColor(),'type':'mario'});
 });
 
 mouse.mousedraggers.push(function(x,y,clicked,e) {
