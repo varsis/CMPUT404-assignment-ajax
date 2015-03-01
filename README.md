@@ -11,5 +11,11 @@ Contributors / Licensing
 ========================
 
 Generally everything is LICENSE'D under the Apache 2 license by Abram Hindle.
+Modified by Chris Pavlicek
+
+External Sources
+==================
+Borrowed getRandomInt() and Array of colors from:
+http://perfectionkills.com/exploring-canvas-drawing-techniques/
 
 
