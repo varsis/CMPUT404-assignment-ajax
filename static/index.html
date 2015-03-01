@@ -32,51 +32,275 @@ var W = canvas.width  = window.innerWidth-6;
 var H = canvas.height = window.innerHeight-50;
 
 
-function sendJSONXMLHTTPRequest(url, objects, callback) {
+function JSONXMLHTTPRequest(method, url, objects, callback) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState==4) {
             try {
                 if (xhr.status==200) {
-                    //XXX: parse some JSON from the request!
-                    //XXX: Pass the data to the callback!
+                    var json_data = JSON.parse(xhr.responseText);
+                    return callback(json_data);
                 }
             } 
             catch(e) {
-                alert('Error: ' + e.name);
+                console.log('Error: ' + e.name);
             }
         }
     };
-    //XXX: POST to a URL
-    //XXX: set the mimetype and the accept headers!
-    // Remember to use application/json !
+    xhr.open(method,url,true);
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    if(objects !== null){
+        xhr.send(JSON.stringify(objects));
+    } else {
+        xhr.send();
+    }
 }
-
 
 world = {};
 
-//XXX: TODO Make this prettier!
-function drawCircle(context,entity) {
-    with(context) {
-        beginPath();              
+
+function drawCircle(context,entity){
+       with(context) {
+        beginPath();
+
         lineWidth = 3;
         var x = entity["x"];
         var y = entity["y"];
+
         //moveTo(x,y);
         fillStyle = entity["colour"];
         strokeStyle = fillStyle;
         arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);  
         stroke();                                
+    } 
+}
+//http://perfectionkills.com/exploring-canvas-drawing-techniques/
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+function drawSquare(context,entity){
+       with(context) {
+        beginPath();
+
+        lineWidth = 3;
+        var x = entity["x"];
+        var y = entity["y"];
+
+        //moveTo(x,y);
+        fillStyle = entity["colour"];
+        strokeStyle = fillStyle;
+        rect(x-25,y-25,50,50);
+        fill();                                
+    } 
+}
+
+function drawMario(context,entity){
+    with(context) {
+        beginPath();
+
+        lineWidth = 5;
+        var startX = entity["x"];
+        var startY = entity["y"];
+
+        var x = startX;
+        var y = startY;
+
+        var redColor = "rgb(252,13,27)";
+        var tanColor = "rgb(255,200,162)";
+        var brownColor = "rgb(126,52,11)";
+        var whiteColor = "rgb(255,255,255)";
+        var blueColor = "rgb(0,38,255)";
+        var yellowColor = "rgb(255,216,0)";
+
+        lineSpacing = 0;
+
+        function incrementLine() {
+            y += 5;
+            x = startX;
+        }
+
+        function addX(ammount) {
+            x += ammount;
+            return x;
+        }
+
+        function drawHorizontalLine(from,to,color) {
+            beginPath();
+            strokeStyle = color;
+            moveTo(addX(from), y);
+            lineTo(addX(to), y);
+            stroke();  
+        }
+
+        // line 1
+        drawHorizontalLine(0,25,redColor); 
+        drawHorizontalLine(10,15,tanColor); 
+
+        incrementLine();
+
+        //line 2
+        drawHorizontalLine(-5,45,redColor); 
+        drawHorizontalLine(0,10,tanColor); 
+     
+        incrementLine();
+
+        //line 3
+        drawHorizontalLine(-5,15,brownColor); 
+        drawHorizontalLine(0,10,tanColor); 
+        drawHorizontalLine(5,5,tanColor); 
+        drawHorizontalLine(0,5,whiteColor); 
+        drawHorizontalLine(0,15,redColor); 
+
+        incrementLine();
+        // line 4
+        drawHorizontalLine(-10,5,brownColor); 
+        drawHorizontalLine(0,5,tanColor); 
+        drawHorizontalLine(0,5,brownColor); 
+        drawHorizontalLine(0,15,tanColor); 
+        drawHorizontalLine(5,15,tanColor); 
+        drawHorizontalLine(0,10,redColor); 
+
+        incrementLine();
+        // line 5
+        
+        drawHorizontalLine(-10,5,brownColor); 
+        drawHorizontalLine(0,5,tanColor); 
+        drawHorizontalLine(0,10,brownColor); 
+        drawHorizontalLine(0,15,tanColor); 
+        drawHorizontalLine(5,15,tanColor); 
+        drawHorizontalLine(0,5,redColor); 
+
+        incrementLine();
+
+        // line 6
+        drawHorizontalLine(-10,10,brownColor); 
+        drawHorizontalLine(0,20,tanColor); 
+        drawHorizontalLine(20,5,redColor); 
+
+        incrementLine();
+        // line 6
+        
+        drawHorizontalLine(0,35,tanColor); 
+        drawHorizontalLine(0,10,redColor); 
+
+        incrementLine();
+        // line 7
+        
+        drawHorizontalLine(-30,15,tanColor); 
+        drawHorizontalLine(0,20,redColor); 
+        drawHorizontalLine(0,5,blueColor); 
+        drawHorizontalLine(0,15,redColor); 
+        drawHorizontalLine(0,5,blueColor); 
+        drawHorizontalLine(0,10,redColor); 
+        drawHorizontalLine(10,5,brownColor); 
+
+        incrementLine();
+        // line 8
+        
+        drawHorizontalLine(-30,15,tanColor); 
+        drawHorizontalLine(0,25,redColor); 
+        drawHorizontalLine(0,5,blueColor); 
+        drawHorizontalLine(0,15,redColor); 
+        drawHorizontalLine(0,5,blueColor); 
+        drawHorizontalLine(10,10,brownColor); 
+        
+        incrementLine();
+        // line 9
+        
+        drawHorizontalLine(-25,5,tanColor); 
+        drawHorizontalLine(15,15,redColor); 
+        drawHorizontalLine(0,20,blueColor); 
+        drawHorizontalLine(0,5,yellowColor); 
+        drawHorizontalLine(0,10,blueColor); 
+        drawHorizontalLine(0,10,brownColor); 
+
+        incrementLine();
+        // line 10
+        
+        drawHorizontalLine(0,15,blueColor); 
+        drawHorizontalLine(0,5,yellowColor); 
+        drawHorizontalLine(0,25,blueColor); 
+        drawHorizontalLine(0,10,brownColor); 
+
+        incrementLine();
+        // line 11
+        
+        drawHorizontalLine(-10,10,brownColor); 
+        drawHorizontalLine(0,45,blueColor); 
+        drawHorizontalLine(0,10,brownColor); 
+
+        incrementLine();
+        // line 12
+
+        drawHorizontalLine(-15,15,brownColor); 
+        drawHorizontalLine(0,30,blueColor); 
+
+        incrementLine();
+        // line 12
+        drawHorizontalLine(-15,10,brownColor); 
+    } 
+
+}
+
+function drawPolygon(context,entity){
+       with(context) {
+        beginPath();
+
+        lineWidth = 3;
+        var x = entity["x"] - 25;
+        var y = entity["y"] - 35;
+
+        fillStyle = entity["colour"];
+        strokeStyle = fillStyle;
+
+        moveTo(x,y);
+
+        x += 40;
+        lineTo(x, y);
+
+        y += 30;
+        x += 20;
+        lineTo(x,y);
+
+        y += 30;
+        lineTo(x,y);
+
+        y += 10;
+        x -= 20;
+        lineTo(x,y);
+
+        y -= 30;
+        x -= 40;
+        lineTo(x,y);
+
+        closePath();
+        fill();
+        stroke();                                
+    } 
+}
+
+//XXX: TODO Make this prettier!
+function drawEntity(context,entity) {
+    if(entity['type'] === 'polygon'){
+        drawMario(context,entity);
+    } else if (entity['type'] === 'square'){
+        drawSquare(context,entity);
+    } else {
+        drawCircle(context, entity);
     }
 }
+
 
 function prepEntity(entity) {
     if (!entity["colour"]) {
         entity["colour"] = "#FF0000";
     }
-    if (!entity["radius"]) {
-        entity["radius"] = 50;
-    }
+    //if (!entity["radius"]) {
+    //    entity["radius"] = 50;
+    //}
     return entity;
 }
 
@@ -94,7 +318,7 @@ function renderFrame() {
     clearFrame();
     for (var key in world) {
         var entity = world[key];
-        drawCircle(context,prepEntity(entity));
+        drawEntity(context,prepEntity(entity));
     }
 }
 
@@ -136,9 +360,7 @@ function getPosition(e) {
 
 function addEntity(entity, data) {
     world[entity] = data;
-    drawNextFrame(); // (but should we?)
-    //XXX: Send a XHTML Request that updates the entity you just  modified!
-
+    JSONXMLHTTPRequest('POST','/entity/' + entity, data, drawNextFrame);
 }
 
 var counter = 0;
@@ -244,25 +466,39 @@ mouse = (function() {
     return self;
 })();
 
+function getRandomColor() {
+    return ['red', 'orange', 'yellow', 'green', 
+                         'light-blue', 'blue', 'purple'][getRandomInt(0,6)];
+};
+
 // Add the application specific mouse listeners!
 //XXX: TODO Make these prettier!
 mouse.mousedowners.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'blue'});
+    addEntityWithoutName({'x':x,'y':y,'colour':getRandomColor(),'type':'polygon'});
 });
 
 mouse.mouseuppers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'red'});
+    addEntityWithoutName({'x':x,'y':y,'colour':getRandomColor(),'type':'square'});
 });
 
 mouse.mousedraggers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'green',
-                          'radius':10});
+    addEntityWithoutName({'x':x,'y':y,'colour':getRandomColor(),
+                          'radius':getRandomInt(3,15)});
 });
 
+//var myCounter = 0;
+//var div = document.createElement("div");
+//div.style.backgroundColor = '#FFF';
+//document.body.appendChild(div);
 
 function update() {
-    //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
-    drawFrame();
+    JSONXMLHTTPRequest('GET','/world',null,function setWorld(data){
+                //myCounter++;
+                //div.innerHTML = JSON.stringify(world) === JSON.stringify(data) + '\n Count: ' + myCounter;
+                world = data;
+                drawNextFrame();
+                drawFrame();
+            });
 }
 
 // 30 frames per second
